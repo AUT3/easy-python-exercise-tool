@@ -1,0 +1,8 @@
+[
+    {
+        "type": "e",
+        "question": "Napisz program wyswietlajacy \"Hello World\"",
+        "pts": 2,
+        "answer": "Hello World"
+    }
+]
