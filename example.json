@@ -1,8 +1,24 @@
 [
     {
         "type": "e",
+        "title": "Zadanie 1",
         "question": "Napisz program wyswietlajacy \"Hello World\"",
         "pts": 2,
-        "answer": "Hello World"
+        "answer": "print('Hello World')"
+    },
+    {
+        "type": "e",
+        "title": "Zadanie 2",
+        "question": "Napisz liczacy do 50",
+        "pts": 2,
+        "answer": "for i in range(0,51): print(i)",
+        "file": "pytanie2.py"
+    },
+    {
+        "type": "sc",
+        "title": "Pytanie 1",
+        "question": "Wybierz: \nA) Odp 1\nB) Odp 2\nC) Odp 3\nD) Odp 4",
+        "pts": 1,
+        "answer": "a"
     }
 ]
