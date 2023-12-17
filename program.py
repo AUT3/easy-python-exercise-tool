@@ -4,6 +4,8 @@ import configparser
 
 # file with the actual program
 
+# TODO: ADD POINTS
+
 class exercise:
     def __init__(self, path, solution_path) -> None:
         self.path = path
@@ -29,6 +31,8 @@ class exercise:
     def show_question(self, num) -> bool:
         q = self.ex[num]
         output = False
+
+        # TODO: HANDLE CTRL+C
 
         if(num != 0):
             print("\n")
@@ -77,4 +81,8 @@ def loop(e: exercise):
     print("Congratulations!")
 
 if __name__ == "__main__":
-    pass
+    config = configparser.ConfigParser()
+    config.read("config.ini")
+
+    exe = exercise(config["PARAMETERS"]["exercisepath"], config["PARAMETERS"]["solutionpath"])
+    loop(exe)
