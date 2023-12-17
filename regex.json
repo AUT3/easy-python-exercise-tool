@@ -1,0 +1,9 @@
+[
+    {
+        "type": "sc",
+        "title": "Pytanie 1",
+        "question": "Wybierz: \nA) Odp 1\nB) Odp 2\nC) Odp 3\nD) Odp 4",
+        "pts": 1,
+        "answer": "a"
+    }
+]
