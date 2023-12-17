@@ -11,7 +11,7 @@ solution_path: str
 portable = False
 
 if __name__ == "__main__":
-    # parsing arguments
+    # parsing arguments: src, (-F, -o)
     parser = argparse.ArgumentParser(description="Software to make creating Python exercises easier")
 
     parser.add_argument("-f", "--file", type=str, help="Specify the default solution file (otherwise default will be dynamic inside the program)", default="")

@@ -1,8 +1,6 @@
 import json
 import subprocess
 import configparser
-import sys
-import re
 
 # file with the actual program
 
@@ -34,6 +32,8 @@ class exercise:
         q = self.ex[num]
         output = False
 
+        # TODO: HANDLE CTRL+C
+
         if(num != 0):
             print("\n")
 
@@ -42,24 +42,17 @@ class exercise:
         
         if(q["type"] == "sc" or q["type"] == "mc"):
             # single-choice / multiple-choice (same thing code wise, might merge them in json to "c" for choice)
-            try:
-                ans = input("Type your answer here:\n>").lower()
-            except KeyboardInterrupt:
-                sys.exit()
+            ans = input("Type your answer here:\n>").lower()
 
-            regex_res = re.search("[a-z0-9]+", ans)
+            # TODO: regex here
 
-            if(not regex_res): output = False
-            else: output = (regex_res.group() == q["answer"])
+            output = (ans == q["answer"])
         elif(q["type"]=="e"):
             # executable exercise (placeholder name) - requires code to be written
 
             if(len(q.get('file', '')) == 0):
                 if(len(self.solution_path) == 0):
-                    try:
-                        ans = input("Type your code here:\n>")
-                    except KeyboardInterrupt:
-                        sys.exit()
+                    ans = input("Type your code here:\n>")
                 else:
                     ans = self.handle_solution_file(self.solution_path)
             else:
