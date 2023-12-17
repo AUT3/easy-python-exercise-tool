@@ -17,6 +17,7 @@ if __name__ == "__main__":
     parser.add_argument("-f", "--file", type=str, help="Specify the default solution file (otherwise default will be dynamic inside the program)", default="")
     parser.add_argument("-p", "--portable_path", type=str, help="Output to .exe file (for portability). Remember to end with /")
     parser.add_argument("-d", "--debug", action="store_true", help="Keep the debug files (only relevant for -p)")
+    parser.add_argument("-e", "--eval", action="store_true", help="Set this if it is supposed to be a test (answering incorrectly won't give another chance")
     parser.add_argument("exercise-file", type=str, help="Specify the exercise (json) file")
 
     args = parser.parse_args()
@@ -27,6 +28,7 @@ if __name__ == "__main__":
     solution_path = arg_config["file"]
     portable_path = arg_config["portable_path"]
     keep_debug = arg_config["debug"]
+    eval_mode = arg_config["eval"]
 
     if(portable_path):
         # makes the program portable
@@ -49,7 +51,8 @@ if __name__ == "__main__":
         config = configparser.ConfigParser()
         config["PARAMETERS"] = {
             "ExercisePath": exercise_path,
-            "SolutionPath": (solution_path or "none")
+            "SolutionPath": (solution_path or "none"),
+            "Eval": eval_mode
         }
 
         config_file = open(portable_path + "dist/" + "config.ini", "a")
@@ -62,5 +65,5 @@ if __name__ == "__main__":
     else:
         # runs the program normally
 
-        exe = program.exercise(exercise_path, solution_path)
-        program.loop(exe)
+        exe = program.exercise(exercise_path, solution_path, eval_mode)
+        exe.loop()

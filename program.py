@@ -9,16 +9,19 @@ import re
 # TODO: ADD POINTS
 
 class exercise:
-    def __init__(self, path, solution_path) -> None:
+    def __init__(self, path, solution_path, eval_mode) -> None:
         self.path = path
         file = open(path, "r")
         self.ex = json.loads(file.read())
         file.close()
         self.clear_file = True
         self.solution_path = solution_path
+        self.points = 0
+        self.eval_mode = eval_mode
 
     def handle_solution_file(self, path):
         # create or clear file (works, weirdly enough)
+        print(f"{self.clear_file}, {path}")
         if(self.clear_file):
             open(path, "w").close()
 
@@ -34,11 +37,16 @@ class exercise:
         q = self.ex[num]
         output = False
 
+        # separate questions
         if(num != 0):
             print("\n")
 
-        print(q["title"])
-        print(q["question"])
+        print(q["title"], end=" ")
+
+        if(self.eval_mode): 
+            print(f"({q.get('pts', 0)})", end="")
+        
+        print(f"\n{q['question']}")
         
         if(q["type"] == "sc" or q["type"] == "mc"):
             # single-choice / multiple-choice (same thing code wise, might merge them in json to "c" for choice)
@@ -51,7 +59,7 @@ class exercise:
 
             if(not regex_res): output = False
             else: output = (regex_res.group() == q["answer"])
-        elif(q["type"]=="e"):
+        elif(q["type"] == "e"):
             # executable exercise (placeholder name) - requires code to be written
 
             if(len(q.get('file', '')) == 0):
@@ -75,21 +83,32 @@ class exercise:
             print(f"Error! Probably wrong type in question {num}!!!")
             output = False
 
-        self.clear_file = output
+        if(len(q.get('file', '')) != 0):
+            self.clear_file = output
+
+        # if correct, add points
+        if(self.eval_mode):
+            self.points += q.get('pts', 0) * output
 
         return output
 
-def loop(e: exercise):
-    i = 0
-    while(i < len(e.ex)):
-        if(e.show_question(i)):
-            i += 1
+    def loop(self):
+        i = 0
+        while(i < len(self.ex)):
+            if(not self.eval_mode):
+                # 'practice' mode
+                if(self.show_question(i)):
+                    i += 1
+            else:
+                # eval mode
+                self.show_question(i)
+                i += 1
 
-    print("Congratulations!")
+        print(f"You did it! Points: ({self.points}/)") # add max pts later
 
 if __name__ == "__main__":
     config = configparser.ConfigParser()
     config.read("config.ini")
 
-    exe = exercise(config["PARAMETERS"]["exercisepath"], config["PARAMETERS"]["solutionpath"])
-    loop(exe)
+    exe = exercise(config["PARAMETERS"]["exercisepath"], config["PARAMETERS"]["solutionpath"], config["PARAMETERS"]["eval"])
+    exe.loop()
