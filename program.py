@@ -17,6 +17,7 @@ class exercise:
         self.clear_file = True
         self.solution_path = solution_path
         self.points = 0
+        self.max_points = 0
         self.eval_mode = eval_mode
 
     def handle_solution_file(self, path):
@@ -76,7 +77,7 @@ class exercise:
             result = subprocess.run(["python3", "-c", ans], capture_output=True).stdout
             expected = subprocess.run(["python3", "-c", q["answer"]], capture_output=True).stdout
 
-            print(f"Your result: {result}\nExpected result: {expected}")
+            # print(f"Your result: {result}\nExpected result: {expected}")
             
             output = (result == expected)
         else:
@@ -89,6 +90,7 @@ class exercise:
         # if correct, add points
         if(self.eval_mode):
             self.points += q.get('pts', 0) * output
+            self.max_points += q.get('pts', 0)
 
         return output
 
@@ -104,7 +106,8 @@ class exercise:
                 self.show_question(i)
                 i += 1
 
-        print(f"You did it! Points: ({self.points}/)") # add max pts later
+        print(f"You did it!", end="")
+        print(f"Points: ({self.points}/{self.max_points})")
 
 if __name__ == "__main__":
     config = configparser.ConfigParser()
